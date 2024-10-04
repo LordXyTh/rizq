@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+  <style>
+    th,
+    td {
+      text-align: center;
+    }
+  </style>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Stock List</h1>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Market Cap</th>
+              <th>Weighted Market Cap %</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stock in stocks %}
+              <tr>
+                <td>{{ stock.symbol }}</td>
+                <td>{{ stock.name }}</td>
+                <!-- format price in rs -->
+                <td>{{ stock.price|floatformat:2 }}</td>
+                <!-- format mkap in rs -->
+                <td>{{ stock.market_cap|floatformat:0|intcomma }}</td>
+                <td>{{ stock.weighted_market_cap|floatformat:2 }}%</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

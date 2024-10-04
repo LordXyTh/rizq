@@ -24,7 +24,7 @@ urlpatterns = [
     path("users/", include("rizq.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    # ...
+    path("investing/", include("rizq.investing.urls", namespace="investing")),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
