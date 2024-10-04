@@ -1,0 +1,12 @@
+{% load humanize %}
+
+{% for stock in stocks %}
+  <tr>
+    <td>{{ stock.symbol }}</td>
+    <td>{{ stock.name }}</td>
+    <td>{{ stock.price|floatformat:2 }} PKR</td>
+    <td>{{ stock.market_cap|floatformat:0|intcomma }} PKR</td>
+    <td>{{ stock.weighted_market_cap|floatformat:2 }}%</td>
+    <td>{{ stock.shares_to_buy }}</td>
+  </tr>
+{% endfor %}
