@@ -4,15 +4,15 @@
 
 {% block content %}
   <style>
-    th,
-    td {
+    table {
       text-align: center;
     }
   </style>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
-        <h1>Stock List</h1>
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h1 class="text-center">Stock List</h1>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -24,19 +24,31 @@
             </tr>
           </thead>
           <tbody>
-            {% for stock in stocks %}
+            {% for item in stocks %}
               <tr>
-                <td>{{ stock.symbol }}</td>
-                <td>{{ stock.name }}</td>
-                <!-- format price in rs -->
-                <td>{{ stock.price|floatformat:2 }}</td>
-                <!-- format mkap in rs -->
-                <td>{{ stock.market_cap|floatformat:0|intcomma }}</td>
-                <td>{{ stock.weighted_market_cap|floatformat:2 }}%</td>
+                <td>{{ item.symbol }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.price|floatformat:2 }} PKR</td>
+                <!-- Format as price in PKR -->
+                <td>{{ item.market_cap|floatformat:0|intcomma }} PKR</td>
+                <!-- Format market cap in PKR -->
+                <td>{{ item.weighted_market_cap|floatformat:2 }}%</td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
+      </div>
+      <div class="col-md-2">
+        <form class="form-inline mt-5 ml-5">
+          <div class="form-group">
+            <label for="investmentAmount" class="sr-only">Your Investment Amount</label>
+            <input type="number"
+                   class="form-control"
+                   id="investmentAmount"
+                   placeholder="Investment Amount" />
+          </div>
+          <button type="submit" class="btn btn-primary ml-2 mt-2">Submit</button>
+        </form>
       </div>
     </div>
   </div>
