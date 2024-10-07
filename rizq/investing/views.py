@@ -1,3 +1,4 @@
+import requests
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -50,3 +51,10 @@ class CalculateSharesView(View):
 
         html = render_to_string("investing/partials/investment_suggestions.html", {"stocks": stock_data_list})
         return HttpResponse(html)
+
+
+def chart_request(request):
+    symbol = request.GET.get("symbol")
+    url = f"https://sarmaaya.pk/ajax/widgets/company_vs_index_filter.php?symbol={symbol}&frame=yearly"
+    response = requests.get(url, timeout=100)
+    return HttpResponse(response.content)

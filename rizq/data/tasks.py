@@ -2,7 +2,6 @@ from celery import shared_task
 from django.utils import timezone
 
 from rizq.data.models import IndexStock
-from rizq.data.utils.fetch_market_data import fetch_market_data
 from rizq.data.utils.fetch_stocks import fetch_stock_symbols
 
 
@@ -32,14 +31,3 @@ def update_stock_symbols():
     all_symbols_in_db = set(IndexStock.objects.values_list("symbol", flat=True))
     symbols_to_deactivate = all_symbols_in_db - set(current_symbols_data.keys())
     IndexStock.objects.filter(symbol__in=symbols_to_deactivate).update(active=False)
-
-
-@shared_task
-def update_stock_prices():
-    stocks = IndexStock.objects.filter(active=True)
-    for stock in stocks:
-        data = fetch_market_data(stock.symbol)
-        stock.price = data["current_price"]
-        stock.market_cap = data["market_cap"]
-        stock.last_updated = timezone.now()
-        stock.save()

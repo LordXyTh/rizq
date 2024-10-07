@@ -8,6 +8,15 @@
       text-align: center;
     }
   </style>
+  <script>
+    function openChartInNewTab(symbol) {
+      // Construct the URL for the Django view that returns the HTML
+      const chartUrl = `{% url 'investing:chart_request' %}?symbol=` + symbol;
+
+      // Open the chart in a new tab
+      window.open(chartUrl, '_blank');
+    }
+  </script>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2"></div>
@@ -22,18 +31,28 @@
               <th>Market Cap</th>
               <th>Weighted Market Cap %</th>
               <th>Number of Shares to Buy</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody id="stock-list">
             {% for stock in stocks %}
-              <tr>
+              <tr id="stock-row-{{ stock.symbol }}">
                 <td>{{ stock.symbol }}</td>
                 <td>{{ stock.name }}</td>
                 <td>{{ stock.price|floatformat:2 }} PKR</td>
                 <td>{{ stock.market_cap|floatformat:0|intcomma }} PKR</td>
                 <td>{{ stock.weighted_market_cap|floatformat:2 }}%</td>
                 <td>N/A</td>
+                <td>
+                  <td>
+                    <button class="btn btn-primary"
+                            onclick="openChartInNewTab('{{ stock.symbol }}')">
+                      <i class="fas fa-play"></i> View Chart
+                    </button>
+                  </td>
+                </td>
               </tr>
+              <tr id="chart-container-{{ stock.symbol }}"></tr>
             {% endfor %}
           </tbody>
         </table>
@@ -53,6 +72,10 @@
                    placeholder="Investment Amount" />
           </div>
           <button type="submit" class="btn btn-primary ml-2 mt-2">Submit</button>
+        </form>
+        <form method="get" action="{% url 'data:schedule_task' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-dark mt-5">Update Stocks</button>
         </form>
       </div>
     </div>
